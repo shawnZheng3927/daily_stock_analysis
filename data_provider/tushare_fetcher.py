@@ -87,7 +87,14 @@ class _TushareHttpClient:
             "params": kwargs,
             "fields": fields,
         }
-        res = requests.post(self._api_url, json=req_params, timeout=self._timeout)
+        # 核心修改：适配代理服务器的动态路由
+        request_url = self._api_url
+        # 检查如果我们配置的是这个特定的代理地址，就把 api_name 拼到末尾
+        if request_url.endswith("/dataapi"):
+            request_url = f"{request_url}/{api_name}"
+
+        # 注意把这里的 self._api_url 换成 request_url
+        res = requests.post(request_url, json=req_params, timeout=self._timeout)
         if res.status_code != 200:
             raise Exception(f"Tushare API HTTP {res.status_code}")
 
