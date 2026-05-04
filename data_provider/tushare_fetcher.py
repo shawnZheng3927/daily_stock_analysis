@@ -178,8 +178,12 @@ class TushareFetcher(BaseFetcher):
         The project already normalizes all Pro calls through the same request
         contract, so we do not need the official tushare SDK during runtime.
         """
-        client = _TushareHttpClient(token=token)
-        logger.debug("Tushare API client configured for direct HTTP calls")
+        # 从环境变量获取 API URL，如果没配置则回退到官方默认地址
+        api_url = os.getenv("TUSHARE_API_URL", "http://api.tushare.pro")
+
+        # 将 api_url 传给客户端
+        client = _TushareHttpClient(token=token, api_url=api_url)
+        logger.debug(f"Tushare API client configured for direct HTTP calls. URL: {api_url}")
         return client
 
     def _determine_priority(self) -> int:
