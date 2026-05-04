@@ -183,7 +183,7 @@ class TushareFetcher(BaseFetcher):
 
         # 将 api_url 传给客户端
         client = _TushareHttpClient(token=token, api_url=api_url)
-        logger.debug(f"Tushare API client configured for direct HTTP calls. URL: {api_url}")
+        logger.info(f"Tushare API client configured for direct HTTP calls. URL: {api_url}")
         return client
 
     def _determine_priority(self) -> int:
