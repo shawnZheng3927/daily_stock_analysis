@@ -528,6 +528,43 @@ def run_full_analysis(
                     f"{emoji} {r.name}({r.code}): {r.operation_advice} | "
                     f"评分 {r.sentiment_score} | {r.trend_prediction}"
                 )
+                
+        # === 新增：自动记录每日个股复盘数据到 CSV ===
+        try:
+            import pandas as pd
+            import os
+            from datetime import datetime
+
+            if results:
+                logger.info("开始将每日个股数据保存至 CSV...")
+                csv_file = 'daily_stock_records.csv'
+                today_str = datetime.now().strftime('%Y-%m-%d')
+                
+                daily_data_list = []
+                for r in results:
+                    # 使用 getattr 尝试安全获取当前价格，如果对象中没有直接的价格属性则记录为空
+                    current_price = getattr(r, 'current_price', getattr(r, 'price', ''))
+                    
+                    daily_data_list.append({
+                        'Date': today_str,
+                        'Stock_Name': r.name,
+                        'Stock_Code': r.code,
+                        'Price': current_price,
+                        'Score': r.sentiment_score,
+                        'Action': r.operation_advice,
+                        'Trend': r.trend_prediction
+                    })
+                
+                df_new = pd.DataFrame(daily_data_list)
+                
+                if not os.path.isfile(csv_file):
+                    df_new.to_csv(csv_file, index=False, encoding='utf-8-sig')
+                else:
+                    df_new.to_csv(csv_file, mode='a', header=False, index=False, encoding='utf-8-sig')
+                logger.info(f"CSV 文件保存成功，今日共记录 {len(daily_data_list)} 条数据。")
+        except Exception as e:
+            logger.error(f"保存 CSV 文件失败: {e}")
+        # 👆👆👆 插入结束 👆👆👆
 
         logger.info("\n任务执行完成")
 
