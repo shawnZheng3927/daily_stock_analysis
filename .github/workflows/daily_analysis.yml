@@ -431,6 +431,17 @@ jobs:
           else
             python main.py $FORCE_RUN_ARG
           fi
+          
+      - name: Commit and push daily records
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          # 确保如果文件不存在时不会报错
+          if [ -f daily_stock_records.csv ]; then
+            git add daily_stock_records.csv
+            git commit -m "Auto-record daily stock data [$(date +'%Y-%m-%d')]" || echo "No changes to commit"
+            git push
+          fi
       
       - name: 上传分析报告
         uses: actions/upload-artifact@v6
