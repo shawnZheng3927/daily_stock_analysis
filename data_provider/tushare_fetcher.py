@@ -1152,10 +1152,13 @@ class TushareFetcher(BaseFetcher):
             return None
         
         try:
+            from datetime import datetime
+            start_date = datetime.now().strftime('%Y%m%d')
+            
             # 19点之后才有当天数据
-            start_date = self.get_trade_time(early_time='00:00', late_time='19:00') 
-            if not start_date:
-                return None
+            # start_date = self.get_trade_time(early_time='00:00', late_time='19:00') 
+            # if not start_date:
+            #     return None
 
             ts_code = self._convert_stock_code(stock_code)
 
