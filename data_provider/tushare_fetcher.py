@@ -121,7 +121,7 @@ class TushareFetcher(BaseFetcher):
     """
     Tushare Pro 数据源实现
     
-    优先级：2
+    优先级：1
     数据来源：Tushare Pro API
     
     关键策略：
@@ -135,7 +135,7 @@ class TushareFetcher(BaseFetcher):
     """
     
     name = "TushareFetcher"
-    priority = int(os.getenv("TUSHARE_PRIORITY", "2"))  # 默认优先级，会在 __init__ 中根据配置动态调整
+    priority = int(os.getenv("TUSHARE_PRIORITY", "1"))  # 默认优先级，会在 __init__ 中根据配置动态调整
 
     def __init__(self, rate_limit_per_minute: int = 80):
         """
