@@ -1410,6 +1410,15 @@ class DataFetcherManager:
 
         # 直接遍历管理器已经按 priority 排好序的数据源列表
         for fetcher in self._get_fetchers_snapshot():
+
+            # 显示筹码调用的顺序
+            logger.warning(
+                f"[调试-筹码顺序] 当前fetcher="
+                f"{fetcher.name}, "
+                f"priority={fetcher.priority}"
+            )
+
+            
             # 只处理实现了筹码分布逻辑的数据源
             if not hasattr(fetcher, 'get_chip_distribution'):
                 continue
