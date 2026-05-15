@@ -1166,6 +1166,25 @@ class TushareFetcher(BaseFetcher):
                 start_date=start_date,
                 end_date=start_date,
             )
+            
+            if df is None:
+                logger.error(
+                    f"[调试-Tushare筹码] cyq_chips 返回 None"
+                )
+            else:
+                logger.warning(
+                    f"[调试-Tushare筹码] cyq_chips rows={len(df)}"
+                )
+                
+                if not df.empty:
+                    logger.warning(
+                        f"[调试-Tushare筹码] cyq_chips columns={list(df.columns)}"
+                    )
+                    logger.warning(
+                        f"[调试-Tushare筹码] cyq_chips head=\n{df.head(3)}"
+                    )
+
+            
             if df is not None and not df.empty:
                 daily_df = self._call_api_with_rate_limit(
                     "daily",
