@@ -189,7 +189,7 @@ class TushareFetcher(BaseFetcher):
         api_url = os.getenv("TUSHARE_API_URL", "http://api.tushare.pro")
 
         # 将 api_url 传给客户端
-        client = _TushareHttpClient(token=token, api_url=api_url)
+        client = _TushareHttpClient(token=token, api_url=api_url, timeout=120)
         logger.info(f"Tushare API client configured for direct HTTP calls. URL: {api_url}")
         return client
 
